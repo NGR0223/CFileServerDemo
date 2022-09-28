@@ -1,3 +1,6 @@
+#ifndef DEMO_SERVER_H
+#define DEMO_SERVER_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,7 +9,4 @@
 
 int InitServer(char *pServerAddr, u_int16_t server_port);
 
-int InitServer(char *pServerAddr, u_int16_t server_port)
-{
-
-}
+#endif //DEMO_SERVER_H
