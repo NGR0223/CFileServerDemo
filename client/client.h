@@ -22,6 +22,12 @@ enum CONNECT_SERVER_ERROR
  */
 int connect_server(char *pAddrServer, uint16_t unsPortServer);
 
-void send_message(int nConnectFd,char *pSendBuf,size_t unlLenSendBuf);
+/*!
+ * Send message to server
+ * @param nConnectFd the connect fd
+ * @param pSendBuf the send buffer
+ * @param unlLenSendBuf the length of send buffer
+ */
+void send_message(int nConnectFd, char *pSendBuf, size_t unlLenSendBuf);
 
 #endif //DEMO_CLIENT_H

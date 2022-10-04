@@ -50,9 +50,15 @@ int init_server(char *pAddrServer, uint16_t unsPortServer)
     return nListenFd;
 }
 
-void echo_message(int unCFd, char *pMsg, uint32_t unLenMsg)
+/*!
+ * echo the message received from client
+ * @param nConnectFd the connect fd
+ * @param pMsg the message
+ * @param unLenMsg the length of message
+ */
+void echo_message(int nConnectFd, char *pMsg, uint32_t unLenMsg)
 {
-    printf("Client(%d): %s\n", unCFd, pMsg);
-    send(unCFd, pMsg, unLenMsg, 0);
+    printf("Client(%d): %s\n", nConnectFd, pMsg);
+    send(nConnectFd, pMsg, unLenMsg, 0);
 }
 

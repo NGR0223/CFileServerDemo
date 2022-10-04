@@ -3,7 +3,7 @@ project(Demo C)
 
 set(CMAKE_C_STANDARD 11)
 
-option(USE_SERVER "Use server module " OFF)   # If use client, set ON to OFF(Need refresh cmake cache)
+option(USE_SERVER "Use server module " ON)   # If use client, set ON to OFF(Need refresh cmake cache)
 
 if (USE_SERVER)
     message("Use server module")

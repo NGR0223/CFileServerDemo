@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    if (strncmp("quit", chArrRecvBuf,4) == 0)
+                    if (strncmp("quit", chArrRecvBuf, 4) == 0)
                     {
                         printf("Client(%d) has sent 'quit' and disconnected...\n", nCurrentFd);
 

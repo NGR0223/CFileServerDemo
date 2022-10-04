@@ -23,7 +23,12 @@ enum INIT_SERVER_ERROR
  */
 int init_server(char *pAddrServer, uint16_t unsPortServer);
 
-
-void echo_message(int unCFd, char *pMsg, uint32_t unLenMsg);
+/*!
+ * echo the message received from client
+ * @param nConnectFd the connect fd
+ * @param pMsg the message
+ * @param unLenMsg the length of message
+ */
+void echo_message(int nConnectFd, char *pMsg, uint32_t unLenMsg);
 
 #endif //DEMO_SERVER_H

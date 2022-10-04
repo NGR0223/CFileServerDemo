@@ -8,8 +8,8 @@ set(STATIC YES) # If want a dynamic library, set YES to NO
 if (STATIC)
     # Static library
     add_library(Server ${DIR_LIB_SRCS})
-else ()
+else()
     # Dynamic library
     SET(CMAKE_C_FLAGS "-fPIC")
-    ADD_LIBRARY(Server SHARED ${DIR_LIB_SRCS})
-endif ()
+    ADD_LIBRARY(Server SHARED  ${DIR_LIB_SRCS})
+endif()
