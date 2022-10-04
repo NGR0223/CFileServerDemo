@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.18)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 
 aux_source_directory(. DIR_LIB_SRCS)
 
-set(STATIC YES) # if want a dynamic library, set YES to NO
+set(STATIC YES) # If want a dynamic library, set YES to NO
 if (STATIC)
     # Static library
     add_library(Client ${DIR_LIB_SRCS})

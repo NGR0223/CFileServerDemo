@@ -1,16 +1,26 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.18)
 project(Demo C)
 
-set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
 
+option(USE_SERVER "Use server module " OFF)   # If use client, set ON to OFF(Need refresh cmake cache)
 
-add_executable(Demo server/server.c client client/client.c main.c)
+if (USE_SERVER)
+    message("Use server module")
 
-set(SERVER YES) # if use client, set YES to NO
-if (SERVER)
+    add_definitions(-DUSE_SERVER)
+
     add_subdirectory(server)
-    target_link_libraries(Demo Server)
+
+    add_executable(ServerDemo main.c)
+
+    target_link_libraries(ServerDemo Server)
 else ()
+    message("Use client module")
+
     add_subdirectory(client)
-    target_link_libraries(Demo Client)
+
+    add_executable(ClientDemo main.c)
+
+    target_link_libraries(ClientDemo Client)
 endif ()

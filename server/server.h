@@ -7,13 +7,23 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-enum INIT_SERVER_RESULT
+enum INIT_SERVER_ERROR
 {
-    INIT_SERVER_RESULT_OK = 0,
-    INIT_SERVER_RESULT_SOCKET = -1,
-    INIT_SERVER_RESULT_BIND = -2;
-    INIT_SERVER_RESULT_
+    INIT_SERVER_ERROR_SOCKET = -1,
+    INIT_SERVER_ERROR_BIND = -2,
+    INIT_SERVER_ERROR_LISTEN = -3
 };
-int InitServer(char *pAddrServer, uint16_t unServerPort);
+
+/*!
+ * Init the server with address and port
+ * @param pAddrServer the address of server
+ * @param unsPortServer the port of server
+ * @return if OK, return the @nListenFd
+ *         else, return @INIT_SERVER_ERROR
+ */
+int init_server(char *pAddrServer, uint16_t unsPortServer);
+
+
+void echo_message(int unCFd, char *pMsg, uint32_t unLenMsg);
 
 #endif //DEMO_SERVER_H
