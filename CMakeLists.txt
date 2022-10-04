@@ -3,7 +3,8 @@ project(Demo C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(Demo main.c)
+
+add_executable(Demo server/server.c client client/client.c main.c)
 
 set(SERVER YES) # if use client, set YES to NO
 if (SERVER)
