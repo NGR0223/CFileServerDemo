@@ -1,6 +1,101 @@
 #include "server.h"
 
 /*!
+ * A server
+ * @param pAddrServer the address of server
+ * @param unsPortServer the port of server
+ */
+void server(char *pAddrServer, uint16_t unsPortServer)
+{
+    int nListenFd = init_server(pAddrServer, unsPortServer);
+    if (nListenFd < 0)
+    {
+        puts("Init server Error");
+
+        return;
+    }
+
+    // Init epoll with listen fd
+    int nEpFd = epoll_create(MAX_EVENT);
+    struct epoll_event tAllEpEv[MAX_EVENT + 1], tListenEpEv;
+    tListenEpEv.events = EPOLLIN;
+    tListenEpEv.data.fd = nListenFd;
+    epoll_ctl(nEpFd, EPOLL_CTL_ADD, nListenFd, &tListenEpEv);
+
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "EndlessLoop"
+    for (;;)
+    {
+        int nNewFds = epoll_wait(nEpFd, tAllEpEv, sizeof(tAllEpEv) / sizeof(tAllEpEv[0]), -1);
+        for (int i = 0; i < nNewFds; ++i)
+        {
+            int nCurrentFd = tAllEpEv[i].data.fd;
+            // New connection from client
+            if (nCurrentFd == nListenFd)
+            {
+                struct sockaddr_in tAddrClient;
+                socklen_t unLenAddrClient = sizeof(tAddrClient);
+                int nConnectFd = accept(nListenFd, (struct sockaddr *) &tAddrClient, &unLenAddrClient);
+                if (nConnectFd == -1)
+                {
+                    perror("Accept Error:");
+
+                    continue;
+                }
+                // Print the address and port
+                printf("Client has connected from %s:%d\n", inet_ntoa(tAddrClient.sin_addr),
+                       htons(tAddrClient.sin_port));
+
+                struct epoll_event tTmpEpEv;
+                tTmpEpEv.events = EPOLLIN;
+                tTmpEpEv.data.fd = nConnectFd;
+                epoll_ctl(nEpFd, EPOLL_CTL_ADD, nConnectFd, &tTmpEpEv);
+            }
+            else
+            {
+                // Avoid non read operation
+                if (!(tAllEpEv[i].events & EPOLLIN))
+                {
+                    continue;
+                }
+
+                char chArrRecvBuf[BUFSIZ];
+                memset(chArrRecvBuf, 0, BUFSIZ);
+                long lBytesRecv = recv(nCurrentFd, &chArrRecvBuf, BUFSIZ, 0);
+                if (lBytesRecv < 0)
+                {
+                    perror("Recv Error:");
+
+                    continue;
+                }
+                else if (lBytesRecv == 0)
+                {
+                    printf("Client(%d) has disconnected...\n", nCurrentFd);
+
+                    epoll_ctl(nEpFd, EPOLL_CTL_DEL, nCurrentFd, NULL);
+                    close(nCurrentFd);
+                }
+                else
+                {
+                    if (strncmp("quit", chArrRecvBuf, 4) == 0)
+                    {
+                        printf("Client(%d) has sent 'quit' and disconnected...\n", nCurrentFd);
+
+                        epoll_ctl(nEpFd, EPOLL_CTL_DEL, nCurrentFd, NULL);
+                        close(nCurrentFd);
+                    }
+                    else
+                    {
+                        echo_message(nCurrentFd, chArrRecvBuf, lBytesRecv);
+                    }
+                }
+            }
+        }
+    }
+#pragma clang diagnostic pop
+}
+
+/*!
  * Init the server with address and port
  * @param pAddrServer the address of server
  * @param unsPortServer the port of server

@@ -6,6 +6,10 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <sys/epoll.h>
+#include <errno.h>
+
+#define MAX_EVENT 2048
 
 enum INIT_SERVER_ERROR
 {
@@ -13,6 +17,13 @@ enum INIT_SERVER_ERROR
     INIT_SERVER_ERROR_BIND = -2,
     INIT_SERVER_ERROR_LISTEN = -3
 };
+
+/*!
+ * A server
+ * @param pAddrServer the address of server
+ * @param unsPortServer the port of server
+ */
+void server(char *pAddrServer, uint16_t unsPortServer);
 
 /*!
  * Init the server with address and port

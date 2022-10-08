@@ -13,6 +13,7 @@ enum CONNECT_SERVER_ERROR
     CONNECT_SERVER_ERROR_CONNECT = -2
 };
 
+void client(char *pAddrServer, uint16_t unsPortServer);
 /*!
  * Connect to the server with address and port
  * @param pAddrServer the address of server
