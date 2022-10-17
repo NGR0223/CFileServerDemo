@@ -16,10 +16,9 @@
 int main()
 {
 #ifdef USE_SERVER
-    server(ADDR_SERVER_BIND,PORT_SERVER);
+    server(ADDR_SERVER_BIND, PORT_SERVER);
 #else
     client(ADDR_SERVER_CONNECT, PORT_SERVER);
 #endif
-
     return 0;
 }

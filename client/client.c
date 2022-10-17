@@ -17,11 +17,29 @@ void client(char *pAddrServer, uint16_t unsPortServer)
 
     char chArrSendBuf[BUFSIZ] = {0};
     char chArrRecvBuf[BUFSIZ] = {0};
+    char isFirst = 1;
     for (;;)
     {
-        // Get input
+//        // Get input
+//        memset(chArrSendBuf, 0, BUFSIZ);
+//        fgets(chArrSendBuf, BUFSIZ, stdin);
+//        size_t unlLenSendBuf = strlen(chArrSendBuf);
+//        chArrSendBuf[unlLenSendBuf] = '\0';
+
+        // For testing concurrency, the input is "Hello" and "quit"
+        char buf[5] = {0};
+        if (isFirst)
+        {
+            strncpy(buf, "hell\0", 5);
+            isFirst = 0;
+        }
+        else
+        {
+            strncpy(buf, "quit\0", 5);
+        }
+
         memset(chArrSendBuf, 0, BUFSIZ);
-        fgets(chArrSendBuf, BUFSIZ, stdin);
+        memcpy(chArrSendBuf, buf, 5);
         size_t unlLenSendBuf = strlen(chArrSendBuf);
         chArrSendBuf[unlLenSendBuf] = '\0';
 
